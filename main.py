@@ -1,8 +1,8 @@
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
-import base64
-import csv
 from googleapiclient.discovery import build
+from email_utils import create_message, send_message
+from csv_utils import get_emails_from_csv
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
@@ -15,33 +15,12 @@ def main():
     subject = 'Sua Newsletter Semanal'
     body = 'Olá assinantes! Esta é a nossa última newsletter.'
 
-    subscribers = []
-
-
-    with open('lista_assinantes.csv', 'r') as csvfile:
-        csvreader = csv.reader(csvfile)
-        next(csvreader)
-
-        for row in csvreader:
-            if row: 
-                email = row[0]
-                subscribers.append(email)
+    csv_filename = 'lista_assinantes.csv'
+    subscribers = get_emails_from_csv(csv_filename)
 
     for subscriber in subscribers:
-        message = create_message('seu_email@example.com', subscriber, subject, body)
+        message = create_message('testedasilvafilho@gmail.com', subscriber, subject, body)
         send_message(service, 'me', message)
-
-def create_message(sender, to, subject, message_text):
-    message = f"From: {sender}\nTo: {to}\nSubject: {subject}\n\n{message_text}"
-    raw_message = base64.urlsafe_b64encode(message.encode()).decode()
-    return {'raw': raw_message}
-
-def send_message(service, user_id, message):
-    try:
-        message = service.users().messages().send(userId=user_id, body=message).execute()
-        print('Mensagem enviada:', message['id'])
-    except Exception as e:
-        print('Ocorreu um erro:', e)
 
 if __name__ == '__main__':
     main()
