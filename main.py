@@ -1,6 +1,7 @@
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 import base64
+import csv
 from googleapiclient.discovery import build
 
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
@@ -14,7 +15,17 @@ def main():
     subject = 'Sua Newsletter Semanal'
     body = 'Olá assinantes! Esta é a nossa última newsletter.'
 
-    subscribers = ['ravimughal@hotmail.com', 'assinante2@example.com']
+    subscribers = []
+
+
+    with open('lista_assinantes.csv', 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        next(csvreader)
+
+        for row in csvreader:
+            if row: 
+                email = row[0]
+                subscribers.append(email)
 
     for subscriber in subscribers:
         message = create_message('seu_email@example.com', subscriber, subject, body)
