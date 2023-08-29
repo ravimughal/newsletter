@@ -19,8 +19,12 @@ def main():
     subscribers = get_emails_from_csv(csv_filename)
 
     for subscriber in subscribers:
-        message = create_message('testedasilvafilho@gmail.com', subscriber, subject, body)
-        send_message(service, 'me', message)
+        try:
+            sender_email = 'seu_email@example.com'  # Remetente padrão
+            message = create_message(sender_email, subscriber, subject, body)
+            send_message(service, 'me', message)
+        except ValueError as e:
+            print(e)
 
 if __name__ == '__main__':
     main()
