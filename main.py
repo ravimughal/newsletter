@@ -34,7 +34,7 @@ class EmailApp:
 
         if subject and body:
             try:
-                flow = InstalledAppFlow.from_client_secrets_file('path_to_credentials.json', SCOPES)
+                flow = InstalledAppFlow.from_client_secrets_file('./path_to_credentials.json', SCOPES)
                 credentials = flow.run_local_server(port=0)
 
                 service = build('gmail', 'v1', credentials=credentials)
