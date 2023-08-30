@@ -21,7 +21,7 @@ jobs:
       - name: Substituir valor no JSON
         run: |
           # Substituir o valor no arquivo path_to_credentials.json
-          sed -i "s/YOUR_CONFIDENTIAL_API_KEY/$API_KEY/g" path_to_credentials.json
+          sed -i "s/API_KEY/$API_KEY/g" path_to_credentials.json
           
           # Verificar as alterações
           cat path_to_credentials.json
