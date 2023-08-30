@@ -1,0 +1,27 @@
+name: Substituir Valor Confidencial
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  replace-json-value:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v2
+
+      - name: Ler segredo
+        env:
+          API_KEY: ${{ secrets.API_KEY }}  # Atribui o valor do segredo à variável de ambiente
+        run: echo "API_KEY = $API_KEY"  # Isso é apenas para fins de verificação
+
+      - name: Substituir valor no JSON
+        run: |
+          # Substituir o valor no arquivo path_to_credentials.json
+          sed -i "s/YOUR_CONFIDENTIAL_API_KEY/$API_KEY/g" path_to_credentials.json
+          
+          # Verificar as alterações
+          cat path_to_credentials.json
